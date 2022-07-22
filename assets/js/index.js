@@ -53,39 +53,8 @@ const propiedadesJSON = [
   const resultadoTotal = propiedadesJSON.length;
   span.innerHTML = resultadoTotal; 
 
-  
-  let mostrar = document.querySelector(".propiedades")
-  let html = "";
-  function iniciar (){
-  for (prop of propiedadesJSON) {
-  html+= `
-    <div class="propiedad">
-      <div class="img" style="background-image: url('${prop.src}')"></div>
-        <section>
-          <h5>${prop.name}</h5>
-          <div class="d-flex justify-content-between">
-            <p>Cuartos: ${prop.cuartos}</p>
-            <p>Metros: ${prop.metros}</p>
-          </div>
-          <p class="my-3">${prop.description}</p>
-          <button class="btn btn-info ">Ver más</button>
-        </section> 
-    </div>`
-console.log(prop)
-}
-
-mostrar.innerHTML = html;
-}
-//buscar elementos 
-
-function buscar(){
-  let cantidad = document.querySelector("#cantidad").value;
-  let min = document.querySelector("#minimo").value;
-  let max = document.querySelector("#maximo").value;
-  html = '';
-  for(prop of propiedadesJSON){
-    if((Number(cantidad) <=prop.cuartos) && Number(min)<= prop.metros <= Number(max)){
-      html+= `
+  let template = (prop) =>{
+    return  `
     <div class="propiedad">
       <div class="img" style="background-image: url('${prop.src}')"></div>
         <section>
@@ -98,13 +67,41 @@ function buscar(){
           <button class="btn btn-info ">Ver más</button>
         </section> 
     </div>`;
-    
+
+  };
+
+
+
+  let mostrar = document.querySelector(".propiedades")
+  let html = "";
+  function iniciar (){
+  for (prop of propiedadesJSON) {
+  html+= template(prop);
+}
+
+mostrar.innerHTML = html;
+}
+//buscar elementos 
+
+function buscar(){
+  let cantidad = document.querySelector("#cantidad").value;
+  let min = document.querySelector("#minimo").value;
+  let max = document.querySelector("#maximo").value;
+  let total = [];
+  html = '';
+  for(prop of propiedadesJSON){
+    if((Number(cantidad) <=prop.cuartos) && Number(min)<= prop.metros <= Number(max)){
+      html+= template(prop);
+    total.push(prop);
     }else if((min == 0 || max == 0 || cantidad == 0)){
       alert("faltan campos por llenar");
       return;
     }
   }
   mostrar.innerHTML = html;
+  /* console.log(total);
+  console.log(total.length); */
+  span.innerHTML = total.length;
 }
 window.onload = function(){
   iniciar ()
